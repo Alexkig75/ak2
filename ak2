@@ -1,0 +1,31 @@
+import requests
+
+# GitHub repository information
+username = "your_username"
+access_token = "your_access_token"
+repo_name = "your_repo_name"
+
+# Issue information
+title = "New issue"
+body = "This is a new issue created using the GitHub API."
+
+# API endpoint
+api_base_url = "https://api.github.com"
+issues_url = f"{api_base_url}/repos/{username}/{repo_name}/issues"
+
+# Create the issue
+headers = {
+    "Authorization": f"token {access_token}",
+    "Accept": "application/vnd.github.v3+json"
+}
+data = {
+    "title": title,
+    "body": body
+}
+response = requests.post(issues_url, headers=headers, json=data)
+
+if response.status_code == 201:
+    issue_url = response.json()["html_url"]
+    print(f"Successfully created issue '{title}'. URL: {issue_url}")
+else:
+    print(f"Failed to create issue. Error message: {response.text}")
